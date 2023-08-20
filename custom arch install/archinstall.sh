@@ -120,7 +120,7 @@ echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base base-devel cups linux linux-firmware nano git fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI} ${V_EXTRA_PKG}
+    pacstrap /mnt base base-devel cups linux linux-firmware nano git xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI} ${V_EXTRA_PKG}
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -183,7 +183,7 @@ echo "=> 6. Post-install chroot settings"
     echo ":: Enable chaotic-aur repo"
     arch-chroot /mnt bash -c "pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com" 1> /dev/null
     arch-chroot /mnt bash -c "pacman-key --lsign-key 3056513887B78AEB" 1> /dev/null
-    arch-chroot /mnt bash -c "pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e '[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf" 1> /dev/null    
 
     #=> Pacman config edit:
