@@ -177,7 +177,7 @@ echo "=> 6. Post-install chroot settings"
     echo ":: Enable MULTILIB repo in PACMAN"
     if [ "$(uname -m)" = "x86_64" ];then
         arch-chroot /mnt bash -c "cp /etc/pacman.conf /etc/pacman.conf.bkp" 1> /dev/null
-        arch-chroot /mnt bash -c "sed '/^#\[multilib\]/{s/^#//;n;s/^#//;n;s/^#//}' /etc/pacman.conf > /tmp/pacman" 1> /dev/null
+        arch-chroot /mnt bash -c "sed "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf > /tmp/pacman" 1> /dev/null
         arch-chroot /mnt bash -c "mv /tmp/pacman /etc/pacman.conf" 1> /dev/null
     fi
 
