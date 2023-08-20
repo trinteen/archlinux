@@ -186,7 +186,7 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com" 1> /dev/null
     arch-chroot /mnt bash -c "pacman-key --lsign-key 3056513887B78AEB" 1> /dev/null
     arch-chroot /mnt bash -c "pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'" 1> /dev/null
-    arch-chroot /mnt bash -c "echo -e '[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist'" 1> /dev/null    
+    arch-chroot /mnt bash -c "echo -e '[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf" 1> /dev/null    
 
     #=> Pacman config edit:
     echo ":: Pacman config edit"
