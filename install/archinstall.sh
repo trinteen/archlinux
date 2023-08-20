@@ -25,7 +25,7 @@ export V_LANGUAGE="cs_CZ"
 export V_KEYMAP="cz"
 
 #=> Defines hostname:
-export V_HOSTNAME="tomas-arch"
+export V_HOSTNAME="archlinux"
 
 #=> Defines ROOT password:
 export V_ROOT_PWD="root"
