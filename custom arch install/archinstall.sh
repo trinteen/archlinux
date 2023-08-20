@@ -176,13 +176,11 @@ echo "=> 6. Post-install chroot settings"
     #=> Enabled multilib:
     echo ":: Enable MULTILIB repo in PACMAN"
     if [ "$(uname -m)" = "x86_64" ];then
-        arch-chroot /mnt bash -c "cp /etc/pacman.conf /etc/pacman.conf.bkp" 1> /dev/null
-        arch-chroot /mnt bash -c "sed "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf > /tmp/pacman" 1> /dev/null
-        arch-chroot /mnt bash -c "mv /tmp/pacman /etc/pacman.conf" 1> /dev/null
+        arch-chroot /mnt bash -c "sed -i "/\[multilib\]/,/include/"'s/^#//' /etc/pacman.conf" 1> /dev/null
     fi
 
     #=> Enable Chaotic-aur
-    echp ":: Enable chaotic-aur repo"
+    echo ":: Enable chaotic-aur repo"
     arch-chroot /mnt bash -c "pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com" 1> /dev/null
     arch-chroot /mnt bash -c "pacman-key --lsign-key 3056513887B78AEB" 1> /dev/null
     arch-chroot /mnt bash -c "pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'" 1> /dev/null
