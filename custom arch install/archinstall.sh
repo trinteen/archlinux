@@ -176,7 +176,7 @@ echo "=> 6. Post-install chroot settings"
     #=> Enabled multilib:
     echo ":: Enable MULTILIB repo in PACMAN"
     if [ "$(uname -m)" = "x86_64" ];then
-        arch-chroot /mnt bash -c "sed -i "/\[multilib\]/,/include/"'s/^#//' /etc/pacman.conf" 1> /dev/null
+        arch-chroot /mnt bash -c "echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf" 1> /dev/null
     fi
 
     #=> Enable Chaotic-aur
