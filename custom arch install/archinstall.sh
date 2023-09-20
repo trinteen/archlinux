@@ -42,9 +42,6 @@ export V_GUI="xfce4 lightdm lightdm-gtk-greeter"
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar plank zentile xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin"
 
-#=> Defines AUR packages (with paru):
-export V_AUR_PKG="apple_cursor"
-
 #=> Defines CPU microcode:
 export V_CPU_UCODE="intel-ucode"
 
@@ -202,14 +199,6 @@ echo "=> 6. Post-install chroot settings"
     #=> Extra packages:
     echo ":: Install extra packages"
     arch-chroot /mnt bash -c "pacman --noconfirm --needed -S ${V_EXTRA_PKG}" 1> /dev/null
-
-    #=> Install AUR-helper PARU:
-    echo ":: paru AUR helper"
-    arch-chroot /mnt bash -c "pacman --noconfirm --needed -S git" 1> /dev/null
-    arch-chroot /mnt bash -c "git clone https://aur.archlinux.org/paru.git" 1> /dev/null
-    arch-chroot /mnt bash -c "cd paru" 1> /dev/null
-    arch-chroot /mnt bash -c "makepkg -si" 1> /dev/null
-    arch-chroot /mnt bash -c "paru --noconfirm --needed -Syu ${V_AUR_PKG}" 1> /dev/null
 
     #=> Enable my services:
     echo ":: Enable services"
