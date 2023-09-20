@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Archlinux Install script by Trinteen 2023
 
 ############################
@@ -35,10 +37,10 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="xfce4 xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin lightdm lightdm-gtk-greeter"
+export V_GUI="xfce4 lightdm lightdm-gtk-greeter"
 
 #=> Defines extra packages:
-export V_EXTRA_PKG="zip unzip unrar plank, zentile"
+export V_EXTRA_PKG="zip unzip unrar plank zentile xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin"
 
 #=> Defines AUR packages (with paru):
 export V_AUR_PKG="apple_cursor"
@@ -124,7 +126,7 @@ echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base base-devel cups linux linux-firmware nano git avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI} ${V_EXTRA_PKG}
+    pacstrap /mnt base base-devel cups linux linux-firmware nano git avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI}
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -196,6 +198,10 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "sed -i 's/^#Color/Color/g' /etc/pacman.conf" 1> /dev/null
     arch-chroot /mnt bash -c "sed -i 's/VerbosePkgLists/VerbosePkgLists\nILoveCandy/g' /etc/pacman.conf" 1> /dev/null
     arch-chroot /mnt bash -c "sed -i 's/^#VerbosePkgLists/VerbosePkgLists\n/g' /etc/pacman.conf" 1> /dev/null
+
+    #=> Extra packages:
+    echo ":: Install extra packages"
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -S ${V_EXTRA_PKG}" 1> /dev/null
 
     #=> Install AUR-helper PARU:
     echo ":: paru AUR helper"
