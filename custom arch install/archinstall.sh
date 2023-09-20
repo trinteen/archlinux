@@ -42,6 +42,9 @@ export V_GUI="xfce4 lightdm lightdm-gtk-greeter"
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar plank xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin"
 
+#=> Defines AUR packages:
+export V_AUR_PKG=("zentile-bin")
+
 #=> Defines CPU microcode:
 export V_CPU_UCODE="intel-ucode"
 
@@ -203,6 +206,17 @@ echo "=> 6. Post-install chroot settings"
     #=> Extra packages:
     echo ":: Install extra packages"
     arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG}" 1> /dev/null
+
+    #=> Install AUR packages:
+    echo ":: Install AUR packages"
+    for aur in ${V_AUR_PKG[@]}; do
+        echo $aur
+        arch-chroot /mnt bash -c "<<-EOF
+            cd ~
+            echo ${aur}
+        EOF" 1> /dev/null
+
+    done
 
     #=> Enable my services:
     echo ":: Enable services"
