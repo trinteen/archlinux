@@ -189,6 +189,10 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e '[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf" 1> /dev/null    
 
+    #=> Paru AUR Helper
+    echo ":: Install extra packages"
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy paru" 1> /dev/null
+
     #=> Pacman config edit:
     echo ":: Pacman config edit"
     arch-chroot /mnt bash -c "sed -i 's/^#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf" 1> /dev/null
@@ -198,7 +202,7 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Extra packages:
     echo ":: Install extra packages"
-    arch-chroot /mnt bash -c "pacman --noconfirm --needed -S ${V_EXTRA_PKG}" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG}" 1> /dev/null
 
     #=> Enable my services:
     echo ":: Enable services"
