@@ -177,8 +177,8 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "echo -e 'options root=${V_SYS_HD}3 rw' >> /boot/loader/entries/arch.conf" 1> /dev/null
 
     #=> Enabled multilib:
-    echo ":: Enable MULTILIB repo in PACMAN"
     if [ "$(uname -m)" = "x86_64" ];then
+        echo ":: Enable MULTILIB repo in PACMAN"
         arch-chroot /mnt bash -c "echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf" 1> /dev/null
     fi
 
