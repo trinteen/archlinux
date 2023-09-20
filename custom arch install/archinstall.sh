@@ -35,7 +35,13 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="gnome gdm gnome-terminal"
+export V_GUI="xfce4 xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin lightdm lightdm-gtk-greeter"
+
+#=> Defines extra packages:
+export V_EXTRA_PKG="zip unzip unrar plank, zentile"
+
+#=> Defines AUR packages (with paru):
+export V_AUR_PKG="apple_cursor"
 
 #=> Defines CPU microcode:
 export V_CPU_UCODE="intel-ucode"
@@ -43,10 +49,8 @@ export V_CPU_UCODE="intel-ucode"
 #=> Defines GPU driver:
 export V_GPU="mesa"
 
-#=> Defines extra packages:
-export V_EXTRA_PKG=""
-
-
+#=> Enable my services:
+export V_SERVICES=("lightdm.service")
 
 ############################
 # SCRIPT                   #
@@ -120,7 +124,7 @@ echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base base-devel cups linux linux-firmware nano git xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI} ${V_EXTRA_PKG}
+    pacstrap /mnt base base-devel cups linux linux-firmware nano git avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI} ${V_EXTRA_PKG}
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -155,7 +159,7 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Configuration X11:
     echo ":: Configuration X11"
-    arch-chroot /mnt bash -c "echo -e 'Section "InputClass" \n Identifier "system-keyboard" \n MatchIsKeyboard "on" \n Option "XkbLayout" '${V_KEYMAP}' \n EndSection' > /etc/X11/xorg.conf.d/00-keyboard.conf" 1> /dev/null
+    arch-chroot /mnt bash -c "echo -e 'Section \"InputClass\" \n Identifier \"system-keyboard\" \n MatchIsKeyboard \"on\" \n Option \"XkbLayout\" \"'${V_KEYMAP}'\" \n EndSection' > /etc/X11/xorg.conf.d/00-keyboard.conf" 1> /dev/null
 
     #=> Set DHCP network:
     echo ":: Set DHCP for network"
@@ -192,11 +196,27 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "sed -i 's/^#Color/Color/g' /etc/pacman.conf" 1> /dev/null
     arch-chroot /mnt bash -c "sed -i 's/VerbosePkgLists/VerbosePkgLists\nILoveCandy/g' /etc/pacman.conf" 1> /dev/null
     arch-chroot /mnt bash -c "sed -i 's/^#VerbosePkgLists/VerbosePkgLists\n/g' /etc/pacman.conf" 1> /dev/null
-    
-    #Enable services:
-    arch-chroot /mnt bash -c "systemctl enable NetworkManager" 1> /dev/null
-    arch-chroot /mnt bash -c "systemctl enable cups" 1> /dev/null
-    arch-chroot /mnt bash -c "systemctl enable gdm" 1> /dev/null
+
+    #=> Install AUR-helper PARU:
+    echo ":: paru AUR helper"
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -S git" 1> /dev/null
+    arch-chroot /mnt bash -c "git clone https://aur.archlinux.org/paru.git" 1> /dev/null
+    arch-chroot /mnt bash -c "cd paru" 1> /dev/null
+    arch-chroot /mnt bash -c "makepkg -si" 1> /dev/null
+    arch-chroot /mnt bash -c "paru --noconfirm --needed -Syu ${V_AUR_PKG}" 1> /dev/null
+
+    #=> Enable my services:
+    echo ":: Enable services"
+    for enable_services in ${V_SERVICES[@]}; do
+        echo $enable_services
+        arch-chroot /mnt bash -c "systemctl enable ${enable_services}" 1> /dev/null
+    done
+
+    #=> Enable services:
+    arch-chroot /mnt bash -c "systemctl enable NetworkManager.service" 1> /dev/null
+    arch-chroot /mnt bash -c "systemctl enable cups.service" 1> /dev/null
+    arch-chroot /mnt bash -c "systemctl enable avahi-daemon.service" 1> /dev/null
+    arch-chroot /mnt bash -c "systemctl enable smb.service" 1> /dev/null
     
     #=> Exit chroot:
     arch-chroot /mnt bash -c "exit"
