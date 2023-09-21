@@ -210,13 +210,13 @@ echo "=> 6. Post-install chroot settings"
     #=> Install AUR packages:
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
-        arch-chroot -u ${V_USER_NAME} /mnt bash -s <<-EOF
+        arch-chroot -u ${V_USER_NAME} /mnt bash -s "<<-EOF
             echo "${aur}"
             mkdir -p /home/${V_USER_NAME}/aur_build
             git clone https://aur.archlinux.org/${aur}.git /home/${V_USER_NAME}/aur_build/${aur}
             cd /home/${V_USER_NAME}/aur_build/${aur}
             makepkg -srci
-        EOF 1> /dev/null
+        EOF"
     done
 
     #=> Enable my services:
@@ -233,13 +233,13 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "systemctl enable smb.service" 1> /dev/null
     
     #=> Exit chroot:
-    arch-chroot /mnt bash -c "exit"
+    #arch-chroot /mnt bash -c "exit"
 
 #=> Umount disk & reboot system:
 echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
     
     #=> umount disk:
-    umount -l /mnt 1> /dev/null
+    #umount -l /mnt 1> /dev/null
 
     #=> reboot system:
-    sleep 10 && reboot
+    #sleep 10 && reboot
