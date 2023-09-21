@@ -210,8 +210,12 @@ echo "=> 6. Post-install chroot settings"
     #=> Install AUR packages:
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
-        arch-chroot /mnt bash -s <<-EOF
-            echo ${aur}
+        arch-chroot -u ${V_USER_NAME} /mnt bash -s <<-EOF
+            echo "${aur}"
+            mkdir -p /home/${V_USER_NAME}/aur_build
+            git clone https://aur.archlinux.org/${aur}.git /home/${V_USER_NAME}/aur_build/${aur}
+            cd /home/${V_USER_NAME}/aur_build/${aur}
+            makepkg -srci
         EOF 1> /dev/null
     done
 
