@@ -42,7 +42,7 @@ export V_GUI="xfce4 lightdm lightdm-gtk-greeter"
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar plank xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin"
 
-#=> Defines AUR packages:
+#=> Defines AUR packages (NOT WORKING NOW):
 export V_AUR_PKG=("zentile-bin")
 
 #=> Defines CPU microcode:
@@ -210,13 +210,8 @@ echo "=> 6. Post-install chroot settings"
     #=> Install AUR packages:
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
-        arch-chroot -u ${V_USER_NAME} /mnt bash -s "<<-EOF
-            echo "${aur}"
-            mkdir -p /home/${V_USER_NAME}/aur_build
-            git clone https://aur.archlinux.org/${aur}.git /home/${V_USER_NAME}/aur_build/${aur}
-            cd /home/${V_USER_NAME}/aur_build/${aur}
-            makepkg -srci
-        EOF"
+        echo "This function not working now!"
+        echo ${aur}
     done
 
     #=> Enable my services:
@@ -233,13 +228,13 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "systemctl enable smb.service" 1> /dev/null
     
     #=> Exit chroot:
-    #arch-chroot /mnt bash -c "exit"
+    arch-chroot /mnt bash -c "exit"
 
 #=> Umount disk & reboot system:
 echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
     
     #=> umount disk:
-    #umount -l /mnt 1> /dev/null
+    umount -l /mnt 1> /dev/null
 
     #=> reboot system:
-    #sleep 10 && reboot
+    sleep 10 && reboot
