@@ -210,12 +210,9 @@ echo "=> 6. Post-install chroot settings"
     #=> Install AUR packages:
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
-        echo $aur
-        arch-chroot /mnt bash -c "<<-EOF
-            cd ~
+        arch-chroot /mnt bash -s <<-EOF
             echo ${aur}
-        EOF" 1> /dev/null
-
+        EOF 1> /dev/null
     done
 
     #=> Enable my services:
