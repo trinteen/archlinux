@@ -40,7 +40,7 @@ export V_USER_PASS="user"
 export V_GUI="xfce4 lightdm lightdm-gtk-greeter"
 
 #=> Defines extra packages:
-export V_EXTRA_PKG="zip unzip unrar plank xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin rofi"
+export V_EXTRA_PKG="zip unzip unrar plank xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin rofi xdg-utils"
 
 #=> Defines AUR packages (NOT WORKING NOW):
 export V_AUR_PKG=("zentile-bin")
