@@ -37,13 +37,13 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="xfce4 lightdm lightdm-gtk-greeter xfce4-screenshooter"
+export V_GUI="gnome gdm gnome-terminal"
 
 #=> Defines extra packages:
-export V_EXTRA_PKG="zip unzip unrar plank xarchiver thunar-archive-plugin thunar-shares-plugin thunar-media-tags-plugin rofi xdg-utils alsa-utils"
+export V_EXTRA_PKG="zip unzip unrar"
 
 #=> Defines AUR packages (NOT WORKING NOW):
-export V_AUR_PKG=("zentile-bin")
+export V_AUR_PKG=()
 
 #=> Defines CPU microcode:
 export V_CPU_UCODE="intel-ucode"
@@ -52,7 +52,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("lightdm.service")
+export V_SERVICES=("gdm.service")
 
 ############################
 # SCRIPT                   #
