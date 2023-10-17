@@ -126,7 +126,7 @@ echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base wget base-devel cups linux linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools
+    pacstrap /mnt base wget base-devel cups linux linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI}
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -187,8 +187,10 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Enable CachyOS
     echo ":: Enable CachyOS repo"
-    arch-chroot /mnt bash -c "wget https://mirror.cachyos.org/cachyos-repo.tar.xz" 1> /dev/null
-    arch-chroot /mnt bash -c "tar xvf cachyos-repo.tar.xz && cd cachyos-repo && ./cachyos-repo.sh" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman-key --recv-keys F3B607488DB35A47 --keyserver keyserver.ubuntu.com" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman-key --lsign-key F3B607488DB35A47" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman --noconfirm -U 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-3-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-mirrorlist-17-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v3-mirrorlist-17-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v4-mirrorlist-5-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/pacman-6.0.2-13-x86_64.pkg.tar.zst'" 1> /dev/null
+    arch-chroot /mnt bash -c "echo -e '[cachyos-v4]\nInclude = /etc/pacman.d/cachyos-v4-mirrorlist\n[cachyos-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos-core-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos-extra-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos]\nInclude = /etc/pacman.d/cachyos-mirrorlist' >> /etc/pacman.conf" 1> /dev/null  
     
     #=> Enable Chaotic-aur
     echo ":: Enable chaotic-aur repo"
@@ -210,7 +212,7 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Extra packages:
     echo ":: Install extra packages"
-    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG} ${V_GPU} ${V_CPU_UCODE} ${V_GUI}" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG}" 1> /dev/null
 
     #=> Install AUR packages:
     echo ":: Install AUR packages"
