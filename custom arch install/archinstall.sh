@@ -11,7 +11,7 @@ export V_SYS_HD="/dev/sda"
 
 #=> Defines partitions:
 export V_BOOT_SIZE="200"
-export V_SWAP_SIZE="4000"
+export V_SWAP_SIZE="8000"
 export V_ROOT_FS="ext4"
 
 #=> Defines county:
@@ -37,7 +37,7 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="gnome gnome-terminal gdm"
+export V_GUI="plasma sddm kde-applications alacritty"
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
@@ -52,7 +52,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("gdm.service")
+export V_SERVICES=("sddm.service")
 
 ############################
 # SCRIPT                   #
