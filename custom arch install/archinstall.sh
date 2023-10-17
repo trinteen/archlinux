@@ -126,7 +126,7 @@ echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base base-devel cups linux linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI}
+    pacstrap /mnt base wget base-devel cups linux linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -185,6 +185,11 @@ echo "=> 6. Post-install chroot settings"
         arch-chroot /mnt bash -c "echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf" 1> /dev/null
     fi
 
+    #=> Enable CachyOS
+    echo ":: Enable CachyOS repo"
+    arch-chroot /mnt bash -c "wget https://mirror.cachyos.org/cachyos-repo.tar.xz" 1> /dev/null
+    arch-chroot /mnt bash -c "tar xvf cachyos-repo.tar.xz && cd cachyos-repo && ./cachyos-repo.sh" 1> /dev/null
+    
     #=> Enable Chaotic-aur
     echo ":: Enable chaotic-aur repo"
     arch-chroot /mnt bash -c "pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com" 1> /dev/null
@@ -205,7 +210,7 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Extra packages:
     echo ":: Install extra packages"
-    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG}" 1> /dev/null
+    arch-chroot /mnt bash -c "pacman --noconfirm --needed -Sy ${V_EXTRA_PKG} ${V_GPU} ${V_CPU_UCODE} ${V_GUI}" 1> /dev/null
 
     #=> Install AUR packages:
     echo ":: Install AUR packages"
