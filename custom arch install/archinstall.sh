@@ -37,7 +37,7 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="plasma sddm kde-applications"
+export V_GUI="gnome gnome-terminal gdm"
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
@@ -52,7 +52,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("sddm.service")
+export V_SERVICES=("gdm.service")
 
 ############################
 # SCRIPT                   #
@@ -185,13 +185,6 @@ echo "=> 6. Post-install chroot settings"
         arch-chroot /mnt bash -c "echo -e '[multilib]\nInclude = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf" 1> /dev/null
     fi
 
-    #=> Enable CachyOS
-    echo ":: Enable CachyOS repo"
-    arch-chroot /mnt bash -c "pacman-key --recv-keys F3B607488DB35A47 --keyserver keyserver.ubuntu.com" 1> /dev/null
-    arch-chroot /mnt bash -c "pacman-key --lsign-key F3B607488DB35A47" 1> /dev/null
-    arch-chroot /mnt bash -c "pacman --noconfirm -U 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-3-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-mirrorlist-17-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v3-mirrorlist-17-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v4-mirrorlist-5-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/pacman-6.0.2-13-x86_64.pkg.tar.zst'" 1> /dev/null
-    arch-chroot /mnt bash -c "echo -e '[cachyos-v4]\nInclude = /etc/pacman.d/cachyos-v4-mirrorlist\n[cachyos-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos-core-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos-extra-v3]\nInclude = /etc/pacman.d/cachyos-v3-mirrorlist\n[cachyos]\nInclude = /etc/pacman.d/cachyos-mirrorlist' >> /etc/pacman.conf" 1> /dev/null  
-    
     #=> Enable Chaotic-aur
     echo ":: Enable chaotic-aur repo"
     arch-chroot /mnt bash -c "pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com" 1> /dev/null
