@@ -37,7 +37,7 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="gnome gdm gnome-terminal alacritty"
+export V_GUI="sddm plasma kde-applications"
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
@@ -52,7 +52,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("gdm.service")
+export V_SERVICES=("sddm.service")
 
 ############################
 # SCRIPT                   #
