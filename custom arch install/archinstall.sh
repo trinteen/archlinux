@@ -179,6 +179,11 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "echo -e 'initrd  /initramfs-linux.img' >> /boot/loader/entries/arch.conf" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e 'options root=${V_SYS_HD}3 rw' >> /boot/loader/entries/arch.conf" 1> /dev/null
 
+    #=> Makepkg
+    echo ":: Edit MAKEPKG"
+    arch-chroot /mnt bash -c "sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf" 1> /dev/null
+    arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
+
     #=> Enabled multilib:
     if [ "$(uname -m)" = "x86_64" ];then
         echo ":: Enable MULTILIB repo in PACMAN"
