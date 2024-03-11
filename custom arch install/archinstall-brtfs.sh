@@ -36,12 +36,10 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-# export V_GUI="sddm plasma kde-applications"
-export V_GUI=""
+export V_GUI="sddm plasma kde-applications"
 
 #=> Defines extra packages:
-# export V_EXTRA_PKG="zip unzip unrar"
-export V_EXTRA_PKG=""
+export V_EXTRA_PKG="zip unzip unrar"
 
 #=> Defines AUR packages (NOT WORKING NOW):
 export V_AUR_PKG=()
@@ -53,8 +51,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-# export V_SERVICES=("sddm.service")
-export V_SERVICES=("")
+export V_SERVICES=("sddm.service")
 
 ############################
 # SCRIPT                   #
@@ -193,7 +190,7 @@ echo "=> 6. Post-install chroot settings"
     #=> Makepkg
     echo ":: Edit MAKEPKG"
     arch-chroot /mnt bash -c "sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf" 1> /dev/null
-    arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
+    # arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
 
     #=> Enabled multilib:
     if [ "$(uname -m)" = "x86_64" ];then
@@ -247,10 +244,10 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "exit"
 
 #=> Umount disk & reboot system:
-# echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
-#    
-#    #=> umount disk:
-#    umount -l /mnt 1> /dev/null
-#
-#    #=> reboot system:
-#    sleep 10 && reboot
+echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
+    
+    #=> umount disk:
+    umount -l /mnt 1> /dev/null
+
+    #=> reboot system:
+    sleep 10 && reboot
