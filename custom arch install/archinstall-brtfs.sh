@@ -36,10 +36,12 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="sddm plasma kde-applications"
+# export V_GUI="sddm plasma kde-applications"
+export V_GUI=""
 
 #=> Defines extra packages:
-export V_EXTRA_PKG="zip unzip unrar"
+# export V_EXTRA_PKG="zip unzip unrar"
+export V_EXTRA_PKG=""
 
 #=> Defines AUR packages (NOT WORKING NOW):
 export V_AUR_PKG=()
@@ -51,7 +53,8 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("sddm.service")
+# export V_SERVICES=("sddm.service")
+export V_SERVICES=("")
 
 ############################
 # SCRIPT                   #
@@ -94,9 +97,9 @@ echo "=> 3. SETUP PARTITIONS = ${V_SYS_HD}"
 
     #=> Format partitions:
     echo ":: Format EFI partition"
-    mkfs.fat -F 32 -L ARCH_EFI ${V_SYS_HD}1 1> /dev/null
+    mkfs.fat -F 32 -n ARCH_EFI ${V_SYS_HD}1 1> /dev/null
     echo ":: Format ROOT partition"
-    mkfs.btrfs -L ARCH_ROOT ${V_SYS_HD}3 1> /dev/null
+    mkfs.btrfs -f -L ARCH_ROOT ${V_SYS_HD}3 1> /dev/null
 
     #=> Activation SWAP:
     echo ":: Activation SWAP partition"
@@ -244,10 +247,10 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "exit"
 
 #=> Umount disk & reboot system:
-echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
-    
-    #=> umount disk:
-    umount -l /mnt 1> /dev/null
-
-    #=> reboot system:
-    sleep 10 && reboot
+# echo "=> 7. Umount ${V_SYS_HD} & reboot system..."
+#    
+#    #=> umount disk:
+#    umount -l /mnt 1> /dev/null
+#
+#    #=> reboot system:
+#    sleep 10 && reboot
