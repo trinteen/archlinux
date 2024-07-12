@@ -122,8 +122,8 @@ echo "=> 4. MOUNTING PARTITIONS = ${V_SYS_HD}"
     mkdir -p /mnt/boot
     mount ${V_SYS_HD}1 /mnt/boot
 
-#=> Install system:
-echo "=> 5. INSTALATION NEW SYSTEM TO ${V_SYS_HD}"
+#=> Installing system:
+echo "=> 5. INSTALLING NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Pacman setting before install:
     echo ":: Update mirrorlist for country: ${V_COUNTRY}"
