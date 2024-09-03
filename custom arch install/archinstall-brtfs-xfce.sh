@@ -36,7 +36,7 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="gvfs xarchiver xfce4 xfce4-goodies xfce-theme-manager xfce4-screenshoter xfce4-power-manager system-config-printer pavucontrol lightdm lightdm-gtk-greeter xfce4-panel-compiz xfce4-places-plugin"
+export V_GUI="gvfs xarchiver xfce4 xfce4-goodies xfce-theme-manager xfce4-screenshooter xfce4-screensaver xfce4-power-manager system-config-printer pavucontrol lightdm lightdm-gtk-greeter xfce4-panel-compiz xfce4-places-plugin"
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
