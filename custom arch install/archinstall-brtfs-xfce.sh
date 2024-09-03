@@ -36,7 +36,7 @@ export V_USER_NAME="user"
 export V_USER_PASS="user"
 
 #=> Defines GUI desktop:
-export V_GUI="gvfs xarchiver xfce4 xfce4-goodies pavucontrol"
+export V_GUI="gvfs xarchiver xfce4 xfce4-goodies pavucontrol lightdm lightdm-gtk-greeter"
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
@@ -51,7 +51,7 @@ export V_CPU_UCODE="intel-ucode"
 export V_GPU="mesa"
 
 #=> Enable my services:
-export V_SERVICES=("sddm.service")
+export V_SERVICES=("lightdm.service")
 
 ############################
 # SCRIPT                   #
