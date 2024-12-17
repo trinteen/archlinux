@@ -10,7 +10,7 @@
 export V_SYS_HD="/dev/sda"
 
 #=> Defines partitions:
-export V_BOOT_SIZE="200"
+export V_BOOT_SIZE="512"
 export V_SWAP_SIZE="8000"
 export V_ROOT_FS="ext4"
 
