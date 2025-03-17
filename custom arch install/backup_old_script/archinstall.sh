@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Archlinux Install script by Trinteen 2025
+# Archlinux Install script by Trinteen 2023
 
 ############################
 # VARIABLES                #
@@ -12,6 +12,7 @@ export V_SYS_HD="/dev/sda"
 #=> Defines partitions:
 export V_BOOT_SIZE="512"
 export V_SWAP_SIZE="8000"
+export V_ROOT_FS="ext4"
 
 #=> Defines county:
 export V_COUNTRY="CZ"
@@ -57,15 +58,6 @@ export V_SERVICES=("sddm.service")
 # SCRIPT                   #
 ############################
 
-#=> Type drive:
-if grep -q "nvme" <<< "${V_SYS_HD}"; then
-    export V_SYS_HD_TYPE="p"
-    export V_SYS_HD_TYPENAME="NVME"
-else
-    export V_SYS_HD_TYPE=""
-    export V_SYS_HD_TYPENAME="SATA"
-fi
-
 #=> TimeDateCtl NTP:
 echo "=> 1. NTP = Enabled"
 timedatectl set-ntp true 1> /dev/null
@@ -75,7 +67,7 @@ echo "=> 2. KEYMAP = ${V_KEYMAP}"
 loadkeys ${V_KEYMAP} 1> /dev/null
 
 #=> Initialization:
-echo "=> 3. SETUP PARTITIONS = ${V_SYS_HD} [type:${V_SYS_HD_TYPENAME}]"
+echo "=> 3. SETUP PARTITIONS = ${V_SYS_HD}"
 
     #=> Help math partition:
     P_B_S=1
@@ -103,33 +95,26 @@ echo "=> 3. SETUP PARTITIONS = ${V_SYS_HD} [type:${V_SYS_HD_TYPENAME}]"
 
     #=> Format partitions:
     echo ":: Format EFI partition"
-    mkfs.fat -F 32 -n ARCH_EFI ${V_SYS_HD}${V_SYS_HD_TYPE}1 1> /dev/null
+    mkfs.fat -F 32 ${V_SYS_HD}1 1> /dev/null
     echo ":: Format ROOT partition"
-    mkfs.btrfs -f -L ARCH_ROOT ${V_SYS_HD}${V_SYS_HD_TYPE}3 1> /dev/null
+    mkfs.${V_ROOT_FS} ${V_SYS_HD}3 1> /dev/null
 
     #=> Activation SWAP:
     echo ":: Activation SWAP partition"
-    mkswap ${V_SYS_HD}${V_SYS_HD_TYPE}2
-    swapon ${V_SYS_HD}${V_SYS_HD_TYPE}2
+    mkswap ${V_SYS_HD}2
+    swapon ${V_SYS_HD}2
 
 #=> Mounting partitions:
-echo "=> 4. MOUNTING PARTITIONS = ${V_SYS_HD} [type:${V_SYS_HD_TYPENAME}]"
+echo "=> 4. MOUNTING PARTITIONS = ${V_SYS_HD}"
 
     #=> Mount ROOT partition:
     echo ":: Mount ROOT partition to /mnt"
-    mount ${V_SYS_HD}${V_SYS_HD_TYPE}3 /mnt
-
-    #=> Btrfs:
-    btrfs sub create /mnt/@
-    btrfs sub create /mnt/@home
-    umount /mnt
-    mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@ ${V_SYS_HD}${V_SYS_HD_TYPE}3 /mnt
-    mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@home ${V_SYS_HD}${V_SYS_HD_TYPE}3 /mnt/home
+    mount ${V_SYS_HD}3 /mnt
 
     #=> Mount BOOT partition:
     echo ":: Mount BOOT partition to /mnt/boot"
     mkdir -p /mnt/boot
-    mount ${V_SYS_HD}${V_SYS_HD_TYPE}1 /mnt/boot
+    mount ${V_SYS_HD}1 /mnt/boot
 
 #=> Installing system:
 echo "=> 5. INSTALLING NEW SYSTEM TO ${V_SYS_HD}"
@@ -141,7 +126,7 @@ echo "=> 5. INSTALLING NEW SYSTEM TO ${V_SYS_HD}"
 
     #=> Run pacstrap:
     echo ":: Downloading packages for NEW SYSTEM"
-    pacstrap /mnt base btrfs-progs wget base-devel cups linux linux-headers linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI}
+    pacstrap /mnt base wget base-devel cups linux linux-headers linux-firmware nano git mc avahi samba smbclient gvfs gvfs-smb xorg fish networkmanager network-manager-applet efibootmgr wireless_tools wpa_supplicant os-prober mtools ${V_GPU} ${V_CPU_UCODE} ${V_GUI}
 
     #=> Generate new FSTAB:
     echo ":: Generate new FSTAB file"
@@ -184,7 +169,6 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Setup initial ramdisk environment
     echo ":: Setup initial ramdisk environment"
-    arch-chroot /mnt bash -c "sed -i 's/filesystems fsck/btrfs filesystems/g' /etc/mkinitcpio.conf" 1> /dev/null
     arch-chroot /mnt bash -c "mkinitcpio -p linux" 1> /dev/null
 
     #=> Setup SystemD-Boot:
@@ -192,14 +176,13 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "bootctl --path=/boot install" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e 'title Arch Linux' >> /boot/loader/entries/arch.conf" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e 'linux /vmlinuz-linux' >> /boot/loader/entries/arch.conf" 1> /dev/null
-    arch-chroot /mnt bash -c "echo -e 'initrd  /initramfs-linux.img' >> /boot/loader/entries/arch.conf" 1> /dev/null´
-    UUID_DISK=$(blkid -s UUID -o value ${V_SYS_HD}3)
-    arch-chroot /mnt bash -c "echo -e 'options root=UUID=${UUID_DISK} rootflags=subvol=@ rw' >> /boot/loader/entries/arch.conf" 1> /dev/null
+    arch-chroot /mnt bash -c "echo -e 'initrd  /initramfs-linux.img' >> /boot/loader/entries/arch.conf" 1> /dev/null
+    arch-chroot /mnt bash -c "echo -e 'options root=${V_SYS_HD}3 rw' >> /boot/loader/entries/arch.conf" 1> /dev/null
 
     #=> Makepkg
     echo ":: Edit MAKEPKG"
     arch-chroot /mnt bash -c "sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf" 1> /dev/null
-    # arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
+    arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
 
     #=> Enabled multilib:
     if [ "$(uname -m)" = "x86_64" ];then
