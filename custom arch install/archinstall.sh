@@ -92,7 +92,7 @@ if [[ ${V_GUI_SEL} == "kde" ]]; then
     export V_GUI="ark dolphin kate kitty plasma plasma-workspace kde-applications sddm"
     V_SERVICES+=("sddm.service")
 elif [[ ${V_GUI_SEL} == "cinnamon" ]]; then
-    export V_GUI="blueman bluez-utils cinnamon engrampa gnome-keyring gnome-screenshot kitty gvfs-smb system-config-printer xdg-user-dirs-gtk xed lightdm lightdm-gtk-greeter"
+    export V_GUI="blueman bluez-utils cinnamon cinnamon-translations engrampa gnome-keyring gnome-screenshot kitty gvfs-smb system-config-printer xdg-user-dirs-gtk xed lightdm lightdm-gtk-greeter"
     V_SERVICES+=("lightdm.sevice")
 elif [[ ${V_GUI_SEL} == "gnome" ]]; then
     export V_GUI="gnome gnome-tweaks gdm gnome-keyring gvfs gvfs-smb kitty"
