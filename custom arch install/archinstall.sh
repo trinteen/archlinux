@@ -285,6 +285,7 @@ echo "=> 6. Post-install chroot settings"
         echo ${aur}
         arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --noconfirm --needed -S ${aur}" 1> /dev/null
     done
+    arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/*" 1> /dev/null
 
     #=> Enable my services:
     echo ":: Enable services"
