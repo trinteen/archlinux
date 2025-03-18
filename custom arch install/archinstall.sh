@@ -41,8 +41,8 @@ export V_GUI_SEL=""
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
 
-#=> Defines AUR packages (NOT WORKING NOW):
-export V_AUR_PKG=()
+#=> Defines AUR packages (TESTING):
+export V_AUR_PKG=("mkinitcpio-firnware")
 
 #=> Defines CPU microcode:
 # intel = Intel CPUs
@@ -280,8 +280,8 @@ echo "=> 6. Post-install chroot settings"
     #=> Install AUR packages:
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
-        echo "This function not working now!"
         echo ${aur}
+        arch-chroot /mnt bash -c "su ${V_USER_NAME} && paru --noconfirm --needed -S ${aur} | exit" 1> /dev/null
     done
 
     #=> Enable my services:
