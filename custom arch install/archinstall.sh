@@ -42,7 +42,7 @@ export V_GUI_SEL=""
 export V_EXTRA_PKG="zip unzip unrar"
 
 #=> Defines AUR packages (TESTING):
-export V_AUR_PKG=("mkinitcpio-firmware")
+export V_AUR_PKG=("")
 
 #=> Defines CPU microcode:
 # intel = Intel CPUs
@@ -247,8 +247,7 @@ echo "=> 6. Post-install chroot settings"
     #=> Makepkg
     echo ":: Edit MAKEPKG"
     arch-chroot /mnt bash -c "sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j$(nproc)"/g' /etc/makepkg.conf" 1> /dev/null
-    # arch-chroot /mnt bash -c "sed -i 's#-march=x86-64 -mtune=generic#-march='$(gcc -Q -march=native --help=target | grep march | awk '{print $2}' | head -1)'#g' /etc/makepkg.conf" 1> /dev/null
-
+    
     #=> Enabled multilib:
     if [ "$(uname -m)" = "x86_64" ];then
         echo ":: Enable MULTILIB repo in PACMAN"
@@ -279,13 +278,15 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Install AUR packages:
     echo ":: Install AUR packages"
+    V_AUR_PKG+=("mkinitcpio-firmware")
     arch-chroot /mnt bash -c "echo -e 'root ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/root" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e '${V_USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/${V_USER_NAME}" 1> /dev/null
     for aur in ${V_AUR_PKG[@]}; do
         echo ${aur}
         arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --noconfirm --needed -S ${aur}" 1> /dev/null
     done
-    arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/*" 1> /dev/null
+    arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/root" 1> /dev/null
+    arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/${V_USER_NAME}" 1> /dev/null
 
     #=> Enable my services:
     echo ":: Enable services"
