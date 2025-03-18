@@ -281,7 +281,7 @@ echo "=> 6. Post-install chroot settings"
     echo ":: Install AUR packages"
     for aur in ${V_AUR_PKG[@]}; do
         echo ${aur}
-        arch-chroot /mnt bash -c "su ${V_USER_NAME} && paru --noconfirm --needed -S ${aur}" 
+        arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --sudoloop --noconfirm --needed -S ${aur}" 
         #1> /dev/null
     done
 
