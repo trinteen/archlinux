@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Archlinux Install script by Trinteen 2025
 
@@ -35,8 +35,8 @@ export V_ROOT_PWD="root"
 export V_USER_NAME="user"
 export V_USER_PASS="user"
 
-#=> Defines GUI desktop:
-export V_GUI="sddm plasma kde-applications"
+#=> Defines GUI desktop (kde, cinnamon, gnome, xfce, i3):
+export V_GUI_SEL=""
 
 #=> Defines extra packages:
 export V_EXTRA_PKG="zip unzip unrar"
@@ -45,17 +45,65 @@ export V_EXTRA_PKG="zip unzip unrar"
 export V_AUR_PKG=()
 
 #=> Defines CPU microcode:
-export V_CPU_UCODE="intel-ucode"
+# intel = Intel CPUs
+# amd   = AMD CPUs
+export V_CPU_TYPE="intel"
 
 #=> Defines GPU driver:
-export V_GPU="mesa"
+# amd           = ATI/AMD (open source)
+# intel         = Intel (open source)
+# nvidia-new    = Nvidia (Turing+)
+# nvidia-open   = Nvidia (open source)
+# nvidia        = Nvidia (proprietary)
+# vm            = VMWare / VirtualBox
+export V_GPU_SEL="intel"
 
 #=> Enable my services:
-export V_SERVICES=("sddm.service")
+export V_SERVICES=("")
 
 ############################
 # SCRIPT                   #
 ############################
+
+#=> CPU Microcode:
+if [[ ${V_CPU_TYPE} == "intel"]]; then
+    export V_CPU_UCODE="intel-ucode"
+else
+    export V_CPU_UCODE="amd-ucode"
+fi
+
+#=> GPU Select:
+if  [[ ${V_GPU_SEL} == "amd"]]; then
+    export V_GPU="libva-mesa-driver mesa vulkan-radeon xf86-video-amdgpu xf86-video-ati xorg-server xorg-xinit"
+elif [[ ${V_GPU_SEL} == "intel"]]; then
+    export V_GPU="intel-media-driver libva-intel-driver mesa vulkan-intel xorg-server xorg-xinit"
+elif [[ ${V_GPU_SEL} == "nvida-new"]]; then
+    export V_GPU="dkms nvidia-open nvidia-open-dkms xorg-server xorg-xinit"
+elif [[ ${V_GPU_SEL} == "nvidia-open"]]; then
+    export V_GPU="libva-mesa-driver mesa xf86-video-nouveau xorg-server xorg-xinit"
+elif [[ ${V_GPU_SEL} == "nvidia"]]; then
+    export V_GPU="dkms nvidia-dkms xorg-server xorg-xinit"
+elif [[ ${V_GPU_SEL} == "vm"]]; then
+    export V_GPU="mesa xf86-video-vmware xorg-server xorg-xinit"
+fi
+
+#=> GUI Select:
+if [[ ${V_GUI_SEL} == "kde"]]; then
+    export V_GUI="ark dolphin kate konsole plasma plasma-workspace kde-applications sddm"
+    V_SERVICES+=("sddm.service")
+elif [[ ${V_GUI_SEL} == "cinnamon"]]; then
+    export V_GUI="blueman bluez-utils cinnamon engrampa gnome-keyring gnome-screenshot gnome-terminal gvfs-smb system-config-printer xdg-user-dirs-gtk xed"
+    V_SERVICES=("")
+elif [[ ${V_GUI_SEL} == "gnome"]]; then
+    export V_GUI="gnome gnome-tweaks gdm gnome-keyring gvfs gvfs-smb gnome-terminal"
+    V_SERVICES=("gdm.service")
+elif [[ ${V_GUI_SEL} == "xfce"]]; then
+    export V_GUI="gvfs xarchiver xfce4 xfce4-goodies xfce4-screenshooter xfce4-screensaver xfce4-power-manager system-config-printer pavucontrol xfce4-places-plugin xfce4-mixer gnome-keyring lightdm lightdm-gtk-greeter"
+    V_SERVICES=("lightdm.sevice")
+elif [[ ${V_GUI_SEL} == "i3"]]; then
+    export V_GUI="dmenu i3-wm i3blocks i3lock i3status xss-lock xterm lightdm lightdm-gtk-greeter"
+    V_SERVICES=("lightdm.sevice")
+fi
 
 #=> Type drive:
 if grep -q "nvme" <<< "${V_SYS_HD}"; then
