@@ -288,7 +288,7 @@ echo "=> 6. Post-install chroot settings"
     #=> Enable my services:
     echo ":: Enable services"
     for enable_services in ${V_SERVICES[@]}; do
-        echo $enable_services
+        echo ${enable_services}
         arch-chroot /mnt bash -c "systemctl enable ${enable_services}" 1> /dev/null
     done
 
