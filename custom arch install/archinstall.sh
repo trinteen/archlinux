@@ -279,7 +279,7 @@ echo "=> 6. Post-install chroot settings"
 
     #=> Install AUR packages:
     echo ":: Install AUR packages"
-    arch-chroot /mnt bash -c "echo 'root ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/root" 1> /dev/null
+    arch-chroot /mnt bash -c "echo -e 'root ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/root" 1> /dev/null
     for aur in ${V_AUR_PKG[@]}; do
         echo ${aur}
         arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --sudoloop --noconfirm --needed -S ${aur}" 1> /dev/null
