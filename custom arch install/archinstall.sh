@@ -42,7 +42,7 @@ export V_GUI_SEL=""
 export V_EXTRA_PKG="zip unzip unrar"
 
 #=> Defines AUR packages (TESTING):
-export V_AUR_PKG=("mkinitcpio-firnware")
+export V_AUR_PKG=("mkinitcpio-firmware")
 
 #=> Defines CPU microcode:
 # intel = Intel CPUs
