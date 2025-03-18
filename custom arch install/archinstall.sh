@@ -59,7 +59,7 @@ export V_CPU_TYPE="intel"
 export V_GPU_SEL="intel"
 
 #=> Enable my services:
-export V_SERVICES=("")
+export V_SERVICES_MY=("")
 
 ############################
 # SCRIPT                   #
@@ -90,19 +90,19 @@ fi
 #=> GUI Select:
 if [[ ${V_GUI_SEL} == "kde" ]]; then
     export V_GUI="ark dolphin kate kitty plasma plasma-workspace kde-applications sddm"
-    V_SERVICES+=("sddm.service")
+    export V_SERVICES=("sddm.service")
 elif [[ ${V_GUI_SEL} == "cinnamon" ]]; then
     export V_GUI="blueman bluez-utils cinnamon cinnamon-translations engrampa gnome-keyring gnome-screenshot kitty gvfs-smb system-config-printer xdg-user-dirs-gtk xed lightdm lightdm-gtk-greeter"
-    V_SERVICES+=("lightdm.sevice")
+    export V_SERVICES=("lightdm.sevice")
 elif [[ ${V_GUI_SEL} == "gnome" ]]; then
     export V_GUI="gnome gnome-tweaks gdm gnome-keyring gvfs gvfs-smb kitty"
-    V_SERVICES+=("gdm.service")
+    export V_SERVICES=("gdm.service")
 elif [[ ${V_GUI_SEL} == "xfce" ]]; then
     export V_GUI="gvfs xarchiver kitty xfce4 xfce4-goodies xfce4-screenshooter xfce4-screensaver xfce4-power-manager system-config-printer pavucontrol xfce4-places-plugin xfce4-mixer gnome-keyring lightdm lightdm-gtk-greeter"
-    V_SERVICES+=("lightdm.sevice")
+    export V_SERVICES=("lightdm.sevice")
 elif [[ ${V_GUI_SEL} == "i3" ]]; then
     export V_GUI="kitty dmenu i3-wm i3blocks i3lock i3status xss-lock xterm lightdm lightdm-gtk-greeter"
-    V_SERVICES+=("lightdm.sevice")
+    export V_SERVICES=("lightdm.sevice")
 fi
 
 #=> Type drive:
@@ -241,7 +241,7 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "echo -e 'title Arch Linux' >> /boot/loader/entries/arch.conf" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e 'linux /vmlinuz-linux' >> /boot/loader/entries/arch.conf" 1> /dev/null
     arch-chroot /mnt bash -c "echo -e 'initrd  /initramfs-linux.img' >> /boot/loader/entries/arch.conf" 1> /dev/null´
-    UUID_DISK=$(blkid -s UUID -o value ${V_SYS_HD}3)
+    UUID_DISK=$(blkid -s UUID -o value ${V_SYS_HD}${V_SYS_HD_TYPE}3)
     arch-chroot /mnt bash -c "echo -e 'options root=UUID=${UUID_DISK} rootflags=subvol=@ rw' >> /boot/loader/entries/arch.conf" 1> /dev/null
 
     #=> Makepkg
