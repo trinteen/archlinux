@@ -67,8 +67,8 @@ export V_SERVICES_MY=("")
 
 #ERROR (logging)
 error_log(){
-    echo -e "\e[32mERROR: $1\e[0m" >&2
-    echo "[$(date '+%d.%m.%Y %H:%M:%S')] ERROR: $1\n" >> errors.log
+    echo -e "\e[31mERROR: $1\e[0m" >&2
+    echo "[$(date '+%d.%m.%Y %H:%M:%S')] ERROR: $1" >> errors.log
     exit 1
 }
 
