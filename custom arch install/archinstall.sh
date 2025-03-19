@@ -291,7 +291,7 @@ echo "=> 6. Post-install chroot settings"
     arch-chroot /mnt bash -c "echo -e '${V_USER_NAME} ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/${V_USER_NAME}" 2> /dev/null || error_log "PARU nopasswd configuration for NORMAL user problem." 
     for aur in ${V_AUR_PKG[@]}; do
         echo ${aur}
-        arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --noconfirm --needed -S ${aur}" 2>&1 /dev/null  || error_log "PARU install packages: ${aur} problem."
+        arch-chroot -u ${V_USER_NAME} /mnt bash -c "paru --noconfirm --needed -S ${aur}" 2> /dev/null  || error_log "PARU install packages: ${aur} problem."
     done
     arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/root" 2> /dev/null || error_log "PARU nopasswd configuration for ROOT user (remove) problem."
     arch-chroot /mnt bash -c "rm -rf /etc/sudoers.d/${V_USER_NAME}" 2> /dev/null || error_log "PARU nopasswd configuration for NORMAL user (remove) problem."
