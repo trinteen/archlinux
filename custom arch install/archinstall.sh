@@ -177,6 +177,7 @@ echo "=> 4. MOUNTING PARTITIONS = ${V_SYS_HD} [type:${V_SYS_HD_TYPENAME}]"
     #=> Btrfs:
     btrfs sub create /mnt/@ || error_log "Create BTRFS (sub @) problem."
     btrfs sub create /mnt/@home || error_log "Create BTRFS (sub @home) problem."
+    mkdir -p /mnt/home || error_log "Create @home dir to /mnt/home"
     umount /mnt || error_log "Umounting /mnt problem."
     mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@ ${V_SYS_HD}${V_SYS_HD_TYPE}3 /mnt || error_log "Mount (sub @) to /mnt problem."
     mount -o noatime,nodiratime,compress=zstd,space_cache=v2,ssd,subvol=@home ${V_SYS_HD}${V_SYS_HD_TYPE}3 /mnt/home || error_log "Mount (sub @home) to /mnt/home problem."
